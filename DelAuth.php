@@ -81,7 +81,7 @@ try {
                     <td><?php echo $author['AuthorAddress']; ?></td>
                     <td><?php echo $author['AuthorBiography']; ?></td>
                     <td><?php echo $author['AuthorDateOfBirth']; ?></td>
-                    <td><?php echo $author['AuthorSuspended'] ? 'Yes' : 'No'; ?></td>
+                    <td><?php echo $author['AuthorStatus'] ? 'Yes' : 'No'; ?></td>
                     <td>
                         <a href="DelAuth.php?AuthorId=<?php echo $author['AuthorId']; ?>" onclick="return confirm('Are you sure you want to delete this author?')">Delete</a>
                     </td>
