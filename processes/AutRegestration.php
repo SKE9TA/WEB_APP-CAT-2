@@ -1,33 +1,45 @@
 <?php
-include 'DbConn.php';
-
+// Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  
-    $authorFullName = $_POST['authorFullName'];
-    $authorEmail = $_POST['authorEmail'];
-    $authorAddress = $_POST['authorAddress'];
-    $authorBiography = $_POST['authorBiography'];
-    $authorDateOfBirth = $_POST['authorDateOfBirth'];
-    $authorSuspended = isset($_POST['authorSuspended']) ? 1 : 0; 
+    // Retrieve form data
+    $Author_ID = $_POST['Author_ID'];
+    $AuthorFullname = $_POST['AuthorFullName'];
+    $AuthorEmail = $_POST['AuthorEmail'];
+    $AuthorAddress = $_POST['AuthorAddress'];
+    $AuthorDateOfBirth = $_POST['AuthorDateOfBirth'];
+    $AuthorBiography = $_POST['AuthorBiography'];
+    $AuthorStatus = $_POST['AuthorStatus'];
+
+    $hostname = "localhost"; 
+    $username = "root";      
+    $password = "";          
+    $dbname = "authordb";    
 
     try {
-       
-        $sql = "INSERT INTO authors (AuthorFullName, AuthorEmail, AuthorAddress, AuthorBiography, AuthorDateOfBirth, AuthorSuspended)
-                VALUES (:authorFullName, :authorEmail, :authorAddress, :authorBiography, :authorDateOfBirth, :authorSuspended)";
+        // Establish the database connection
+        $pdo = new PDO("mysql:host=$hostname;dbname=$dbname", $username, $password);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $stmt = $DbConn->prepare($sql);
-        $stmt->bindParam(':authorFullName', $authorFullName);
-        $stmt->bindParam(':authorEmail', $authorEmail);
-        $stmt->bindParam(':authorAddress', $authorAddress);
-        $stmt->bindParam(':authorBiography', $authorBiography);
-        $stmt->bindParam(':authorDateOfBirth', $authorDateOfBirth);
-        $stmt->bindParam(':authorSuspended', $authorSuspended);
+        // Prepare the SQL query using placeholders
+        $stmt = $pdo->prepare("INSERT INTO authorstb (Author_ID, AuthorFullname, AuthorEmail, AuthorAddress, AuthorDateOfBirth, AuthorBiography, AuthorStatus) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
-        $stmt->execute();
+        // Bind parameters to the prepared statement
+        $stmt->bindParam(1, $Author_ID);
+        $stmt->bindParam(2, $AuthorFullname);
+        $stmt->bindParam(3, $AuthorEmail);
+        $stmt->bindParam(4, $AuthorAddress);
+        $stmt->bindParam(5, $AuthorDateOfBirth);
+        $stmt->bindParam(6, $AuthorBiography);
+        $stmt->bindParam(7, $Authorstatus);
 
-        echo "Author registration successful";
+        // Execute the prepared statement
+        if ($stmt->execute()) {
+            echo "Successfully Added!";
+        } else {
+            echo "Error: Failed to insert data.";
+        }
     } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
+        echo "Connection failed: " . $e->getMessage();
     }
 }
 ?>
