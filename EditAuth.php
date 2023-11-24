@@ -2,14 +2,14 @@
 
 include 'DbConn.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['authorId'])) {
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['Author_ID'])) {
     
-    $authorId = $_GET['authorId'];
+    $Author_ID = $_GET['Author_ID'];
 
     try {
-        $sql = "SELECT * FROM authors WHERE AuthorId = :authorId";
+        $sql = "SELECT * FROM authors WHERE Author_ID = :Author_ID";
         $stmt = $DbConn->prepare($sql);
-        $stmt->bindParam(':authorId', $authorId);
+        $stmt->bindParam(':Author_ID', $Author_ID);
         $stmt->execute();
         $author = $stmt->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
@@ -33,25 +33,25 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['authorId'])) {
 <?php if (isset($author) && !empty($author)): ?>
     <form action="ViewAuthors.php" method="post">
         
-        <input type="hidden" name="authorId" value="<?php echo $author['AuthorId']; ?>">
+        <input type="hidden" name="Author_ID" value="<?php echo $author['Author_ID']; ?>">
 
-        <label for="authorFullName">Full Name:</label>
-        <input type="text" id="authorFullName" name="authorFullName" value="<?php echo $author['AuthorFullName']; ?>" required><br>
+        <label for="AuthorFullName">Full Name:</label>
+        <input type="text" id="AuthorFullName" name="AuthorFullName" value="<?php echo $author['AuthorFullName']; ?>" required><br>
 
-        <label for="authorEmail">Email:</label>
-        <input type="email" id="authorEmail" name="authorEmail" value="<?php echo $author['AuthorEmail']; ?>" required><br>
+        <label for="AuthorEmail">Email:</label>
+        <input type="email" id="AuthorEmail" name="AuthorEmail" value="<?php echo $author['AuthorEmail']; ?>" required><br>
 
-        <label for="authorAddress">Address:</label>
-        <input type="text" id="authorAddress" name="authorAddress" value="<?php echo $author['AuthorAddress']; ?>" required><br>
+        <label for="AuthorAddress">Address:</label>
+        <input type="text" id="AuthorAddress" name="AuthorAddress" value="<?php echo $author['AuthorAddress']; ?>" required><br>
 
-        <label for="authorBiography">Biography:</label>
-        <textarea id="authorBiography" name="authorBiography" rows="4" cols="50" required><?php echo $author['AuthorBiography']; ?></textarea><br>
+        <label for="AuthorBiography">Biography:</label>
+        <textarea id="AuthorBiography" name="AuthorBiography" rows="4" cols="50" required><?php echo $author['AuthorBiography']; ?></textarea><br>
 
-        <label for="authorDateOfBirth">Date of Birth:</label>
-        <input type="date" id="authorDateOfBirth" name="authorDateOfBirth" value="<?php echo $author['AuthorDateOfBirth']; ?>" required><br>
+        <label for="AuthorDateOfBirth">Date of Birth:</label>
+        <input type="date" id="AuthorDateOfBirth" name="AuthorDateOfBirth" value="<?php echo $author['AuthorDateOfBirth']; ?>" required><br>
 
-        <label for="authorSuspended">Suspended:</label>
-        <input type="checkbox" id="authorSuspended" name="authorSuspended" <?php echo $author['AuthorSuspended'] ? 'checked' : ''; ?>><br>
+        <label for="AuthorStatus">Suspended:</label>
+        <input type="checkbox" id="AuthorStatus" name="AuthorStatus" <?php echo $author['AuthorStatus'] ? 'checked' : ''; ?>><br>
 
         <input type="submit" value="Update">
     </form>
