@@ -1,76 +1,33 @@
-<?php
-
-include 'DbConn.php';
-
-try {
-    
-    $sql = "SELECT * FROM authors ORDER BY AuthorFullName ASC";
-    $stmt = $DbConn->prepare($sql);
-    $stmt->execute();
-    $authors = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
-}
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Authors</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
+    <title>Document</title>
+    <a href="index.php">Home</a>
+    <a href="ViewAuthors.php">View Authors</a>
 </head>
+
 <body>
+    <?php
+    include 'configs/DbConn.php';
+$stmt = $pdo->query("SELECT * FROM authorstb");
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-<h2>View Authors</h2>
-
-<?php if (isset($authors) && count($authors) > 0): ?>
-    <table>
-        <thead>
-            <tr>
-                <th>AuthorId</th>
-                <th>AuthorFullName</th>
-                <th>AuthorEmail</th>
-                <th>AuthorAddress</th>
-                <th>AuthorBiography</th>
-                <th>AuthorDateOfBirth</th>
-                <th>AuthorSuspended</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($authors as $author): ?>
-                <tr>
-                    <td><?php echo $author['AuthorId']; ?></td>
-                    <td><?php echo $author['AuthorFullName']; ?></td>
-                    <td><?php echo $author['AuthorEmail']; ?></td>
-                    <td><?php echo $author['AuthorAddress']; ?></td>
-                    <td><?php echo $author['AuthorBiography']; ?></td>
-                    <td><?php echo $author['AuthorDateOfBirth']; ?></td>
-                    <td><?php echo $author['AuthorSuspended'] ? 'Yes' : 'No'; ?></td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-<?php else: ?>
-    <p>No authors found.</p>
-<?php endif; ?>
-
+    // Display the data in an editable table
+    echo '<form method="post">';
+    echo '<table>';
+    echo '<tr><th>Author ID</th><th>Full Name</th><th>Email</th></tr>';
+    foreach ($data as $row) {
+        echo '<tr>';
+        echo '<td>' . $row['author_id'] . '</td>';
+        echo '<td><input type="text" name="data['.$row['author_id'].'][fullname]" value="' . $row['fullname'] . '"></td>';
+        echo '<td><input type="text" name="data['.$row['author_id'].'][email]" value="' . $row['email'] . '"></td>';
+        echo '</tr>';
+        echo '</tr>';
+        
+        echo '</tr>';
+    }
+        ?>
 </body>
 </html>
